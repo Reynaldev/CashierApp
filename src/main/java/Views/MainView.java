@@ -2,15 +2,19 @@ package Views;
 
 import Controllers.InventoryController;
 import Models.Inventory;
+import Models.InventoryModel;
 
 import javax.swing.*;
+import javax.swing.event.TableModelEvent;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.AbstractTableModel;
+import javax.swing.table.TableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
-public class MainView implements Runnable, ActionListener {
+public class MainView implements Runnable, ActionListener, TableModelListener {
     // Actions name
     String addItemCommand = "AddItem";
     String editItemCommand = "EditItem";
@@ -30,7 +34,7 @@ public class MainView implements Runnable, ActionListener {
         frame.add(panel);
 
         // Table
-        table = new JTable(new InventoryTableModel());
+        table = new JTable(new InventoryModel());
         JScrollPane tableScrollPane = new JScrollPane(
                 table,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -50,6 +54,7 @@ public class MainView implements Runnable, ActionListener {
         JButton addItemButton = new JButton("Add");
         addItemButton.setActionCommand(addItemCommand);
 
+        constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 0.1;
@@ -63,9 +68,10 @@ public class MainView implements Runnable, ActionListener {
         JButton editItemButton = new JButton("Edit");
         editItemButton.setActionCommand(editItemCommand);
 
+        constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
-        constraints.weightx = 0.1;
+        constraints.weightx = 0.2;
         constraints.weighty = 0;
         constraints.gridheight = 1;
         constraints.gridx = 1;
@@ -78,7 +84,6 @@ public class MainView implements Runnable, ActionListener {
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
-        constraints.weightx = 0.1;
         constraints.weighty = 0;
         constraints.gridheight = 1;
         constraints.gridx = 1;
@@ -87,6 +92,7 @@ public class MainView implements Runnable, ActionListener {
 
         // Action listener
         addItemButton.addActionListener(this);
+        table.getModel().addTableModelListener(this);
 
         frame.pack();
         frame.setVisible(true);
@@ -100,32 +106,12 @@ public class MainView implements Runnable, ActionListener {
         }
     }
 
-    class InventoryTableModel extends AbstractTableModel {
-        String[] columnName = {
-                "ID",
-                "Name",
-                "Quantity",
-                "Price",
-                "Price Total"
-        };
-
-        Object[][] data = {
-                { 1, "Aqua",  }
-        };
-
-        @Override
-        public int getRowCount() {
-            return 0;
-        }
-
-        @Override
-        public int getColumnCount() {
-            return 0;
-        }
-
-        @Override
-        public Object getValueAt(int rowIndex, int columnIndex) {
-            return null;
-        }
+    @Override
+    public void tableChanged(TableModelEvent e) {
+        int row = e.getFirstRow();
+        int col = e.getColumn();
+        TableModel tableModel = (TableModel) e.getSource();
+        String columnName = tableModel.getColumnName(col);
+        Object data = tableModel.getValueAt(row, col);
     }
 }
