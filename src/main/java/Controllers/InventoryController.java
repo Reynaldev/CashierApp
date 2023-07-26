@@ -5,7 +5,7 @@ import Models.Inventory;
 import java.util.Vector;
 
 public class InventoryController {
-    static Vector<Vector<Inventory>> inventoryList = new Vector<>();
+    static Vector<Inventory> inventoryList = new Vector<>();
 
     static int id =  0;
 
@@ -17,7 +17,7 @@ public class InventoryController {
         id++;
     }
 
-    public static Vector<Vector<Inventory>> getAll() {
+    public static Vector<Inventory> getAll() {
         return inventoryList;
     }
 }

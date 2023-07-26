@@ -1,8 +1,10 @@
 package Views;
 
 import Controllers.InventoryController;
+import Models.Inventory;
 
 import javax.swing.*;
+import javax.swing.table.AbstractTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -28,13 +30,7 @@ public class MainView implements Runnable, ActionListener {
         frame.add(panel);
 
         // Table
-        Vector<String> columnNames = new Vector<>();
-        columnNames.add("ID");
-        columnNames.add("Name");
-        columnNames.add("Quantity");
-        columnNames.add("Price");
-
-        table = new JTable(InventoryController.getAll(), columnNames);
+        table = new JTable(new InventoryTableModel());
         JScrollPane tableScrollPane = new JScrollPane(
                 table,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -101,6 +97,35 @@ public class MainView implements Runnable, ActionListener {
     public void actionPerformed(ActionEvent e) {
         if (addItemCommand.equals(e.getActionCommand())) {
             SwingUtilities.invokeLater(new AddItemView());
+        }
+    }
+
+    class InventoryTableModel extends AbstractTableModel {
+        String[] columnName = {
+                "ID",
+                "Name",
+                "Quantity",
+                "Price",
+                "Price Total"
+        };
+
+        Object[][] data = {
+                { 1, "Aqua",  }
+        };
+
+        @Override
+        public int getRowCount() {
+            return 0;
+        }
+
+        @Override
+        public int getColumnCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getValueAt(int rowIndex, int columnIndex) {
+            return null;
         }
     }
 }

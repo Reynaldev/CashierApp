@@ -6,6 +6,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 
 public class AddItemView implements Runnable, ActionListener {
     String addCommand = "Add";
@@ -81,6 +82,7 @@ public class AddItemView implements Runnable, ActionListener {
         // Button
         JButton addButton = new JButton("Add");
         addButton.setActionCommand(addCommand);
+        addButton.setMnemonic(KeyEvent.VK_ENTER);
 
         constraints.fill = GridBagConstraints.NONE;
         constraints.insets = new Insets(12, 12, 12, 12);
@@ -100,19 +102,13 @@ public class AddItemView implements Runnable, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (addCommand.equals(e.getActionCommand())) {
-            try {
-                String name = itemNameField.getText();
-                int quantity = Integer.parseInt(itemQuantityField.getText());
-                int price = Integer.parseInt(itemPriceField.getText());
+            String name = itemNameField.getText();
+            int quantity = Integer.parseInt(itemQuantityField.getText());
+            int price = Integer.parseInt(itemPriceField.getText());
 
-                InventoryController.add(name, quantity, price);
+            InventoryController.add(name, quantity, price);
 
-                System.out.println(InventoryController.getAll());
-
-                frame.dispose();
-            } catch (Error err) {
-                System.out.println("Error: " + err.getMessage());
-            }
+            frame.dispose();
         }
     }
 

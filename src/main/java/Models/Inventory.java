@@ -1,12 +1,10 @@
 package Models;
 
-import java.util.Vector;
-
-public class Inventory extends Vector<Inventory> {
-    int id;
-    String name;
-    int quantity;
-    int price;
+public class Inventory {
+    public int id;
+    public String name;
+    public int quantity;
+    public int price;
 
     public Inventory(int id, String name, int quantity, int price) {
         this.id = id;
