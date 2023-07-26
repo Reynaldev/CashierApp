@@ -1,6 +1,8 @@
 package Models;
 
-public class Inventory {
+import java.util.Vector;
+
+public class Inventory extends Vector<Inventory> {
     int id;
     String name;
     int quantity;

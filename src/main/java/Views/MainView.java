@@ -8,66 +8,86 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Vector;
 
-public class MainView implements ActionListener {
-    AddItemView addItemView;
-
-    // Components
-    JButton addItemButton;
-
+public class MainView implements Runnable, ActionListener {
     // Actions name
     String addItemCommand = "AddItem";
+    String editItemCommand = "EditItem";
+    String deleteItemCommand = "DeleteItem";
 
-    public MainView() {
+    JTable table;
+
+    @Override
+    public void run() {
         // Frame
         JFrame frame = new JFrame("Cashier App");
         frame.setMinimumSize(new Dimension(640, 480));
 
         // Layout
         JPanel panel = new JPanel(new GridBagLayout());
-        panel.setBackground(new Color(20, 20, 20));
+        GridBagConstraints constraints = new GridBagConstraints();
         frame.add(panel);
 
         // Table
-        Vector<String> columnNames = new Vector<String>();
+        Vector<String> columnNames = new Vector<>();
         columnNames.add("ID");
         columnNames.add("Name");
         columnNames.add("Quantity");
         columnNames.add("Price");
 
-        JTable table = new JTable(InventoryController.getAll(), columnNames);
-        table.setBounds(5, 5, 450, 250);
-
+        table = new JTable(InventoryController.getAll(), columnNames);
         JScrollPane tableScrollPane = new JScrollPane(
                 table,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED
         );
-        tableScrollPane.setPreferredSize(table.getPreferredSize());
-        tableScrollPane.setColumnHeaderView(table.getTableHeader());
 
-        // Table
-        GridBagConstraints tableConstraint = new GridBagConstraints();
-        tableConstraint.fill = GridBagConstraints.BOTH;
-        tableConstraint.insets = new Insets(12, 12, 12, 12);
-        tableConstraint.weightx = 0.9;
-        tableConstraint.weighty = 1;
-        tableConstraint.gridheight = 2;
-        tableConstraint.gridx = 0;
-        tableConstraint.gridy = 0;
-        panel.add(tableScrollPane, tableConstraint);
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.weightx = 0.9;
+        constraints.weighty = 0.8;
+        constraints.gridheight = 3;
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        panel.add(tableScrollPane, constraints);
 
         // Add item button
-        addItemButton = new JButton("Add Item");
+        JButton addItemButton = new JButton("Add");
         addItemButton.setActionCommand(addItemCommand);
-        addItemButton.setBounds(table.getWidth() + 10, 5, 150, 25);
 
-        GridBagConstraints addItemButtonConstraint = new GridBagConstraints();
-        addItemButtonConstraint.fill = GridBagConstraints.HORIZONTAL;
-        addItemButtonConstraint.insets = new Insets(12, 12, 12, 12);
-        addItemButtonConstraint.weightx = 0.1;
-        addItemButtonConstraint.gridx = 1;
-        addItemButtonConstraint.gridy = 0;
-        panel.add(addItemButton, addItemButtonConstraint);
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.weightx = 0.1;
+        constraints.weighty = 0;
+        constraints.gridheight = 1;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(addItemButton, constraints);
+
+        // Edit item button
+        JButton editItemButton = new JButton("Edit");
+        editItemButton.setActionCommand(editItemCommand);
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.weightx = 0.1;
+        constraints.weighty = 0;
+        constraints.gridheight = 1;
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        panel.add(editItemButton, constraints);
+
+        // Delete item button
+        JButton deleteItemButton = new JButton("Delete");
+        deleteItemButton.setActionCommand(deleteItemCommand);
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.weightx = 0.1;
+        constraints.weighty = 0;
+        constraints.gridheight = 1;
+        constraints.gridx = 1;
+        constraints.gridy = 2;
+        panel.add(deleteItemButton, constraints);
 
         // Action listener
         addItemButton.addActionListener(this);
@@ -80,7 +100,7 @@ public class MainView implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (addItemCommand.equals(e.getActionCommand())) {
-            addItemView = new AddItemView();
+            SwingUtilities.invokeLater(new AddItemView());
         }
     }
 }
