@@ -27,7 +27,7 @@ public class InventoryController {
         id++;
     }
 
-    public static Object getTotalPrice() {
+    public static int getTotalPrice() {
         // Row
         int row = tableModel.getTableModel().getRowCount();
 

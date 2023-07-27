@@ -13,6 +13,7 @@ public class MainView implements Runnable, ActionListener {
     private JButton addItemButton;
     private JButton editItemButton;
     private JButton deleteItemButton;
+    private JButton calculateButton;
     private JLabel totalPriceLabel;
     private JScrollPane tableScrollPane;
     private JTable table;
@@ -21,6 +22,7 @@ public class MainView implements Runnable, ActionListener {
     private String addItemCommand = "AddItem";
     private String editItemCommand = "EditItem";
     private String deleteItemCommand = "DeleteItem";
+    private String calculateCommand = "CalculatePrice";
 
     @Override
     public void run() {
@@ -46,7 +48,7 @@ public class MainView implements Runnable, ActionListener {
         constraints.weightx = 0.9;
         constraints.weighty = 0.8;
         constraints.gridwidth = 2;
-        constraints.gridheight = 3;
+        constraints.gridheight = 4;
         constraints.gridx = 0;
         constraints.gridy = 0;
         panel.add(tableScrollPane, constraints);
@@ -58,9 +60,11 @@ public class MainView implements Runnable, ActionListener {
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.FIRST_LINE_END;
         constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.weighty = 0.2;
         constraints.gridx = 1;
-        constraints.gridy = 3;
+        constraints.gridy = 4;
         panel.add(totalPriceLabel, constraints);
 
         // Add item button
@@ -91,6 +95,7 @@ public class MainView implements Runnable, ActionListener {
         deleteItemButton = new JButton("Delete");
         deleteItemButton.setActionCommand(deleteItemCommand);
 
+        constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 0.2;
@@ -98,10 +103,24 @@ public class MainView implements Runnable, ActionListener {
         constraints.gridy = 2;
         panel.add(deleteItemButton, constraints);
 
+        // Calculate button
+        calculateButton = new JButton("Calculate");
+        calculateButton.setActionCommand(calculateCommand);
+
+        constraints = new GridBagConstraints();
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.anchor = GridBagConstraints.PAGE_START;
+        constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.weightx = 0.2;
+        constraints.gridx = 2;
+        constraints.gridy = 3;
+        panel.add(calculateButton, constraints);
+
         // Action listener
         addItemButton.addActionListener(this);
         editItemButton.addActionListener(this);
         deleteItemButton.addActionListener(this);
+        calculateButton.addActionListener(this);
 
         frame.pack();
         frame.setVisible(true);
@@ -122,7 +141,12 @@ public class MainView implements Runnable, ActionListener {
 
         // DELETE button
         if (e.getActionCommand().equals(deleteItemCommand)) {
+            System.out.println("Delete!");
+        }
 
+        // CALCULATE button
+        if (e.getActionCommand().equals(calculateCommand)) {
+            totalPriceLabel.setText("Total  Rp" + InventoryController.getTotalPrice());
         }
     }
 }
