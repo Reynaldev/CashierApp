@@ -9,25 +9,29 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class AddItemView implements Runnable, ActionListener {
-    String addCommand = "Add";
+    private String addCommand = "Add";
 
-    JFrame frame;
-
-    JTextField itemNameField;
-    JTextField itemQuantityField;
-    JTextField itemPriceField;
+    private JFrame frame;
+    private JPanel panel;
+    private JButton addButton;
+    private JLabel itemNameLabel;
+    private JLabel itemQuantityLabel;
+    private JLabel itemPriceLabel;
+    private JTextField itemNameField;
+    private JTextField itemQuantityField;
+    private JTextField itemPriceField;
 
     @Override
     public void run() {
         frame = new JFrame("Add Item");
         frame.setMinimumSize(new Dimension(350, 250));
 
-        JPanel panel = new JPanel(new GridBagLayout());
+        panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         frame.add(panel);
 
         // Item label
-        JLabel itemNameLabel = new JLabel("Name     : ", SwingConstants.LEFT);
+        itemNameLabel = new JLabel("Name     : ", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
@@ -35,7 +39,7 @@ public class AddItemView implements Runnable, ActionListener {
         constraints.gridy = 0;
         panel.add(itemNameLabel, constraints);
 
-        JLabel itemQuantityLabel = new JLabel("Quantity : ", SwingConstants.LEFT);
+        itemQuantityLabel = new JLabel("Quantity : ", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
@@ -43,7 +47,7 @@ public class AddItemView implements Runnable, ActionListener {
         constraints.gridy = 1;
         panel.add(itemQuantityLabel, constraints);
 
-        JLabel itemPriceLabel = new JLabel("Price    : ", SwingConstants.LEFT);
+        itemPriceLabel = new JLabel("Price    : ", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
@@ -80,7 +84,7 @@ public class AddItemView implements Runnable, ActionListener {
         panel.add(itemPriceField, constraints);
 
         // Button
-        JButton addButton = new JButton("Add");
+        addButton = new JButton("Add");
         addButton.setActionCommand(addCommand);
         addButton.setMnemonic(KeyEvent.VK_ENTER);
 

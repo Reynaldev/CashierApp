@@ -2,11 +2,8 @@ package Controllers;
 
 import Models.Inventory;
 import Models.InventoryTableModel;
-import Views.MainView;
-import com.sun.tools.javac.Main;
 
 import javax.swing.table.DefaultTableModel;
-import java.util.Vector;
 
 public class InventoryController {
     static InventoryTableModel tableModel = new InventoryTableModel();

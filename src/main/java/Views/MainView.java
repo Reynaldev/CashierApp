@@ -15,6 +15,8 @@ public class MainView implements Runnable, ActionListener {
     private String deleteItemCommand = "DeleteItem";
 
     private JFrame frame;
+    private JPanel panel;
+    private JScrollPane tableScrollPane;
     private JTable table;
 
     @Override
@@ -24,14 +26,14 @@ public class MainView implements Runnable, ActionListener {
         frame.setMinimumSize(new Dimension(640, 480));
 
         // Layout
-        JPanel panel = new JPanel(new GridBagLayout());
+        panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
         frame.add(panel);
 
         // Table
         table = new JTable(InventoryController.getTableModel());
 
-        JScrollPane tableScrollPane = new JScrollPane(
+        tableScrollPane = new JScrollPane(
                 table,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
                 ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED
@@ -88,6 +90,8 @@ public class MainView implements Runnable, ActionListener {
 
         // Action listener
         addItemButton.addActionListener(this);
+        editItemButton.addActionListener(this);
+        deleteItemButton.addActionListener(this);
 
         frame.pack();
         frame.setVisible(true);
@@ -96,7 +100,18 @@ public class MainView implements Runnable, ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        // ADD button
         if (e.getActionCommand().equals(addItemCommand)) {
+            SwingUtilities.invokeLater(new AddItemView());
+        }
+
+        // EDIT button
+        if (e.getActionCommand().equals(editItemCommand)) {
+            SwingUtilities.invokeLater(new AddItemView());
+        }
+
+        // DELETE button
+        if (e.getActionCommand().equals(deleteItemCommand)) {
             SwingUtilities.invokeLater(new AddItemView());
         }
     }
