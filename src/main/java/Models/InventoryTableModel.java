@@ -2,7 +2,7 @@ package Models;
 
 import javax.swing.table.DefaultTableModel;
 
-public class InventoryTableModel extends DefaultTableModel {
+public class InventoryTableModel {
     DefaultTableModel tableModel;
 
     String[] columnName;
