@@ -1,31 +1,26 @@
 package Views;
 
 import Controllers.InventoryController;
-import Models.Inventory;
-import Models.InventoryModel;
 
 import javax.swing.*;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Vector;
 
-public class MainView implements Runnable, ActionListener, TableModelListener {
+public class MainView implements Runnable, ActionListener {
     // Actions name
-    String addItemCommand = "AddItem";
-    String editItemCommand = "EditItem";
-    String deleteItemCommand = "DeleteItem";
+    private String addItemCommand = "AddItem";
+    private String editItemCommand = "EditItem";
+    private String deleteItemCommand = "DeleteItem";
 
-    JTable table;
+    private JFrame frame;
+    private JTable table;
 
     @Override
     public void run() {
         // Frame
-        JFrame frame = new JFrame("Cashier App");
+        frame = new JFrame("Cashier App");
         frame.setMinimumSize(new Dimension(640, 480));
 
         // Layout
@@ -34,7 +29,8 @@ public class MainView implements Runnable, ActionListener, TableModelListener {
         frame.add(panel);
 
         // Table
-        table = new JTable(new InventoryModel());
+        table = new JTable(InventoryController.getTableModel());
+
         JScrollPane tableScrollPane = new JScrollPane(
                 table,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,
@@ -92,7 +88,6 @@ public class MainView implements Runnable, ActionListener, TableModelListener {
 
         // Action listener
         addItemButton.addActionListener(this);
-        table.getModel().addTableModelListener(this);
 
         frame.pack();
         frame.setVisible(true);
@@ -101,17 +96,8 @@ public class MainView implements Runnable, ActionListener, TableModelListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        if (addItemCommand.equals(e.getActionCommand())) {
+        if (e.getActionCommand().equals(addItemCommand)) {
             SwingUtilities.invokeLater(new AddItemView());
         }
-    }
-
-    @Override
-    public void tableChanged(TableModelEvent e) {
-        int row = e.getFirstRow();
-        int col = e.getColumn();
-        TableModel tableModel = (TableModel) e.getSource();
-        String columnName = tableModel.getColumnName(col);
-        Object data = tableModel.getValueAt(row, col);
     }
 }

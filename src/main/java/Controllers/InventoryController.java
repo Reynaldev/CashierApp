@@ -1,23 +1,33 @@
 package Controllers;
 
 import Models.Inventory;
+import Models.InventoryTableModel;
+import Views.MainView;
+import com.sun.tools.javac.Main;
 
+import javax.swing.table.DefaultTableModel;
 import java.util.Vector;
 
 public class InventoryController {
-    static Vector<Inventory> inventoryList = new Vector<>();
+    static InventoryTableModel tableModel = new InventoryTableModel();
 
-    static int id =  0;
+    static int id =  1;
 
     public static void add(String name, int quantity, int price) {
         Inventory inventory = new Inventory(id, name, quantity, price);
 
-        inventoryList.add(inventory);
+        tableModel.getTableModel().addRow(new Object[] {
+                inventory.getId(),
+                inventory.getName(),
+                inventory.getQuantity(),
+                inventory.getPrice(),
+                inventory.getPriceTotal()
+        });
 
         id++;
     }
 
-    public static Vector<Inventory> getAll() {
-        return inventoryList;
+    public static DefaultTableModel getTableModel() {
+        return tableModel.getTableModel();
     }
 }
