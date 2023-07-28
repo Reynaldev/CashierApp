@@ -29,6 +29,10 @@ public class InventoryController {
         }
     }
 
+    public static void delete(int row) {
+        table.removeRow(row);
+    }
+
     public static Object[] getDataRow(int row) {
         Object[] data = new Object[5];
 

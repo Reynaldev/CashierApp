@@ -146,11 +146,13 @@ public class MainView implements Runnable, ActionListener {
     public void actionPerformed(ActionEvent e) {
         // ADD button
         if (e.getActionCommand().equals(addItemCommand)) {
+            // Open AddItemView window
             SwingUtilities.invokeLater(new AddItemView());
         }
 
         // EDIT button
         if (e.getActionCommand().equals(editItemCommand)) {
+            // Get row
             int row = table.getSelectedRow();
             if (row < 0) {
                 JOptionPane.showMessageDialog(
@@ -163,12 +165,38 @@ public class MainView implements Runnable, ActionListener {
                 return;
             }
 
+            // Open EditItemView window
             SwingUtilities.invokeLater(new EditItemView(row));
         }
 
         // DELETE button
         if (e.getActionCommand().equals(deleteItemCommand)) {
-            System.out.println("Delete!");
+            // Get row
+            int row = table.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "No row was selected!",
+                        "Warning",
+                        JOptionPane.ERROR_MESSAGE
+                );
+
+                return;
+            }
+
+            // Show warning dialog
+            String message = "Data in row " + row + " will be DELETED.";
+            int option = JOptionPane.showConfirmDialog(
+                    null, message,
+                    "Warning", JOptionPane.OK_CANCEL_OPTION
+            );
+
+            // Skip if CANCEL button is pressed
+            if (option == JOptionPane.CANCEL_OPTION)
+                return;
+
+            // Delete
+            InventoryController.delete(row);
         }
 
         // CALCULATE button
