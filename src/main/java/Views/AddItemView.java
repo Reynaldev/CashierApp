@@ -9,6 +9,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 
 public class AddItemView implements Runnable, ActionListener {
+    private final int width = 350;
+    private final int height = 250;
+
+    // GUI
     private JFrame frame;
     private JPanel panel;
     private JButton addButton;
@@ -19,19 +23,27 @@ public class AddItemView implements Runnable, ActionListener {
     private JTextField itemQuantityField;
     private JTextField itemPriceField;
 
+    // Commands
     private String addCommand = "Add";
 
     @Override
     public void run() {
-        frame = new JFrame("Add Item");
-        frame.setMinimumSize(new Dimension(350, 250));
+        // Get screen size
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
 
-        panel = new JPanel(new GridBagLayout());
+        // Frame
+        frame = new JFrame("Add Item");
+        frame.setLocation((screenWidth - width) / 2, (screenHeight - height) / 2);
+        frame.setMinimumSize(new Dimension(width, height));
+
         GridBagConstraints constraints = new GridBagConstraints();
+        panel = new JPanel(new GridBagLayout());
         frame.add(panel);
 
         // Item label
-        itemNameLabel = new JLabel("Name     : ", SwingConstants.LEFT);
+        itemNameLabel = new JLabel("Name", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
@@ -39,7 +51,7 @@ public class AddItemView implements Runnable, ActionListener {
         constraints.gridy = 0;
         panel.add(itemNameLabel, constraints);
 
-        itemQuantityLabel = new JLabel("Quantity : ", SwingConstants.LEFT);
+        itemQuantityLabel = new JLabel("Quantity", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
@@ -47,7 +59,7 @@ public class AddItemView implements Runnable, ActionListener {
         constraints.gridy = 1;
         panel.add(itemQuantityLabel, constraints);
 
-        itemPriceLabel = new JLabel("Price    : ", SwingConstants.LEFT);
+        itemPriceLabel = new JLabel("Price", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);

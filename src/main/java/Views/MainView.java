@@ -10,6 +10,10 @@ import java.awt.event.KeyEvent;
 import java.security.Key;
 
 public class MainView implements Runnable, ActionListener {
+    private final int width = 640;
+    private final int height = 480;
+
+    // GUI
     private JFrame frame;
     private JPanel panel;
     private JButton addItemButton;
@@ -20,7 +24,7 @@ public class MainView implements Runnable, ActionListener {
     private JScrollPane tableScrollPane;
     private JTable table;
 
-    // Actions name
+    // Commands
     private String addItemCommand = "AddItem";
     private String editItemCommand = "EditItem";
     private String deleteItemCommand = "DeleteItem";
@@ -28,13 +32,19 @@ public class MainView implements Runnable, ActionListener {
 
     @Override
     public void run() {
+        // Get screen size
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int screenWidth = screenSize.width;
+        int screenHeight = screenSize.height;
+
         // Frame
         frame = new JFrame("Cashier App");
-        frame.setMinimumSize(new Dimension(640, 480));
+        frame.setLocation((screenWidth - width) / 2, (screenHeight - height) / 2);
+        frame.setMinimumSize(new Dimension(width, height));
 
         // Layout
-        panel = new JPanel(new GridBagLayout());
         GridBagConstraints constraints = new GridBagConstraints();
+        panel = new JPanel(new GridBagLayout());
         frame.add(panel);
 
         // Table
@@ -58,7 +68,7 @@ public class MainView implements Runnable, ActionListener {
         // Total price
         totalPriceLabel = new JLabel();
         totalPriceLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-        totalPriceLabel.setText("Total = Rp" + InventoryController.getTotalPrice());
+        totalPriceLabel.setText("Total  Rp" + InventoryController.getTotalPrice());
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -143,6 +153,16 @@ public class MainView implements Runnable, ActionListener {
         // EDIT button
         if (e.getActionCommand().equals(editItemCommand)) {
             int row = table.getSelectedRow();
+            if (row < 0) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "No row was selected!",
+                        "Warning",
+                        JOptionPane.ERROR_MESSAGE
+                );
+
+                return;
+            }
 
             SwingUtilities.invokeLater(new EditItemView(row));
         }
