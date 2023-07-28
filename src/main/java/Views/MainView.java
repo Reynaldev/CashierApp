@@ -7,7 +7,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
-import java.security.Key;
 
 public class MainView implements Runnable, ActionListener {
     private final int width = 640;
@@ -48,7 +47,7 @@ public class MainView implements Runnable, ActionListener {
         frame.add(panel);
 
         // Table
-        table = new JTable(InventoryController.getTableModel());
+        table = new JTable(InventoryController.getTable());
         tableScrollPane = new JScrollPane(
                 table,
                 ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS,

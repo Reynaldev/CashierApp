@@ -6,8 +6,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
-public class EditItemView implements Runnable, ActionListener {
+public class EditItemView implements Runnable, ActionListener, PropertyChangeListener {
     private final int width = 350;
     private final int height = 300;
 
@@ -19,19 +21,21 @@ public class EditItemView implements Runnable, ActionListener {
     private JLabel itemNameLabel;
     private JLabel itemQuantityLabel;
     private JLabel itemPriceLabel;
-    private JTextField itemIDField;
-    private JTextField itemNameField;
-    private JTextField itemQuantityField;
-    private JTextField itemPriceField;
+    private JFormattedTextField itemIDField;
+    private JFormattedTextField itemNameField;
+    private JFormattedTextField itemQuantityField;
+    private JFormattedTextField itemPriceField;
 
     // Commands
     private final String editCommand = "EditCommand";
 
     // Vars
     private Object[] data;
+    private int row;
 
     public EditItemView(int row) {
         this.data = InventoryController.getDataRow(row);
+        this.row = row;
 
 //        System.out.println(
 //                "\nID          : " + this.data[0].toString() +
@@ -97,7 +101,7 @@ public class EditItemView implements Runnable, ActionListener {
         panel.add(itemPriceLabel, constraints);
 
         // ID field
-        itemIDField = new JTextField(data[0].toString());
+        itemIDField = new JFormattedTextField(data[0].toString());
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -108,7 +112,7 @@ public class EditItemView implements Runnable, ActionListener {
         panel.add(itemIDField, constraints);
 
         // Name field
-        itemNameField = new JTextField(data[1].toString());
+        itemNameField = new JFormattedTextField(data[1].toString());
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -119,7 +123,7 @@ public class EditItemView implements Runnable, ActionListener {
         panel.add(itemNameField, constraints);
 
         // Quantity field
-        itemQuantityField = new JTextField(data[2].toString());
+        itemQuantityField = new JFormattedTextField(data[2].toString());
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -130,7 +134,7 @@ public class EditItemView implements Runnable, ActionListener {
         panel.add(itemQuantityField, constraints);
 
         // Price field
-        itemPriceField = new JTextField(data[3].toString());
+        itemPriceField = new JFormattedTextField(data[3].toString());
 
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.HORIZONTAL;
@@ -158,6 +162,11 @@ public class EditItemView implements Runnable, ActionListener {
         frame.pack();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+    }
+
+    @Override
+    public void propertyChange(PropertyChangeEvent evt) {
+
     }
 
     @Override
@@ -200,13 +209,17 @@ public class EditItemView implements Runnable, ActionListener {
             }
 
             // Initialize
-            String name = itemNameField.getText();
-            int id = Integer.parseInt(itemIDField.getText());
-            int quantity = Integer.parseInt(itemQuantityField.getText());
-            int price = Integer.parseInt(itemPriceField.getText());
+            data[0] = itemIDField.getText();
+            data[1] = itemNameField.getText();
+            data[2] = itemQuantityField.getText();
+            data[3] = itemPriceField.getText();
+            data[4] = InventoryController.getPrice(
+                    Integer.parseInt(data[3].toString()),
+                    Integer.parseInt(data[2].toString())
+            );
 
             // Throw message if ID is less than 1
-            if (id < 1) {
+            if (Integer.parseInt(data[0].toString()) < 1) {
                 JOptionPane.showMessageDialog(
                         null,
                         "ID should be more than 1!",
@@ -218,7 +231,7 @@ public class EditItemView implements Runnable, ActionListener {
             }
 
             // Throw message if quantity is less than 1
-            if (quantity < 1) {
+            if (Integer.parseInt(data[2].toString()) < 1) {
                 JOptionPane.showMessageDialog(
                         null,
                         "Quantity should be more than 1!",
@@ -230,7 +243,7 @@ public class EditItemView implements Runnable, ActionListener {
             }
 
             // Throw message if price is less than 100
-            if (price < 100) {
+            if (Integer.parseInt(data[3].toString()) < 100) {
                 JOptionPane.showMessageDialog(
                         null,
                         "Price should be more than 100!",
@@ -240,6 +253,12 @@ public class EditItemView implements Runnable, ActionListener {
 
                 return;
             }
+
+            // Update
+            InventoryController.update(data, row);
+
+            // Close window
+            frame.dispose();
         }
     }
 }
