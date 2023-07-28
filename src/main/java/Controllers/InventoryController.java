@@ -27,6 +27,16 @@ public class InventoryController {
         id++;
     }
 
+    public static Object[] getDataRow(int row) {
+        Object[] data = new Object[5];
+
+        for (int i = 0; i < tableModel.getTableModel().getColumnCount(); i++) {
+            data[i] = tableModel.getTableModel().getValueAt(row, i);
+        }
+
+        return data;
+    }
+
     public static int getTotalPrice() {
         // Row
         int row = tableModel.getTableModel().getRowCount();

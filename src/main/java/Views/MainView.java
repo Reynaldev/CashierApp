@@ -6,6 +6,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.security.Key;
 
 public class MainView implements Runnable, ActionListener {
     private JFrame frame;
@@ -69,6 +71,7 @@ public class MainView implements Runnable, ActionListener {
 
         // Add item button
         addItemButton = new JButton("Add");
+        addItemButton.setMnemonic(KeyEvent.VK_A);
         addItemButton.setActionCommand(addItemCommand);
 
         constraints = new GridBagConstraints();
@@ -81,6 +84,7 @@ public class MainView implements Runnable, ActionListener {
 
         // Edit item button
         editItemButton = new JButton("Edit");
+        editItemButton.setMnemonic(KeyEvent.VK_E);
         editItemButton.setActionCommand(editItemCommand);
 
         constraints = new GridBagConstraints();
@@ -93,6 +97,7 @@ public class MainView implements Runnable, ActionListener {
 
         // Delete item button
         deleteItemButton = new JButton("Delete");
+        deleteItemButton.setMnemonic(KeyEvent.VK_D);
         deleteItemButton.setActionCommand(deleteItemCommand);
 
         constraints = new GridBagConstraints();
@@ -105,6 +110,7 @@ public class MainView implements Runnable, ActionListener {
 
         // Calculate button
         calculateButton = new JButton("Calculate");
+        calculateButton.setMnemonic(KeyEvent.VK_C);
         calculateButton.setActionCommand(calculateCommand);
 
         constraints = new GridBagConstraints();
@@ -136,7 +142,9 @@ public class MainView implements Runnable, ActionListener {
 
         // EDIT button
         if (e.getActionCommand().equals(editItemCommand)) {
-            System.out.println("Edit!");
+            int row = table.getSelectedRow();
+
+            SwingUtilities.invokeLater(new EditItemView(row));
         }
 
         // DELETE button
