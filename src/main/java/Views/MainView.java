@@ -20,6 +20,9 @@ public class MainView implements Runnable, ActionListener {
     private JButton deleteItemButton;
     private JButton calculateButton;
     private JLabel totalPriceLabel;
+    private JMenuBar menuBar;
+    private JMenu fileMenu, helpMenu;
+    private JMenuItem exitMenuItem, aboutMenuItem;
     private JScrollPane tableScrollPane;
     private JTable table;
 
@@ -28,6 +31,8 @@ public class MainView implements Runnable, ActionListener {
     private String editItemCommand = "EditItem";
     private String deleteItemCommand = "DeleteItem";
     private String calculateCommand = "CalculatePrice";
+    private String exitCommand = "ExitCommand";
+    private String aboutCommand = "AboutCommand";
 
     @Override
     public void run() {
@@ -40,6 +45,32 @@ public class MainView implements Runnable, ActionListener {
         frame = new JFrame("Cashier App");
         frame.setLocation((screenWidth - width) / 2, (screenHeight - height) / 2);
         frame.setMinimumSize(new Dimension(width, height));
+
+        // MenuBar
+        menuBar = new JMenuBar();
+
+        // File menu
+        fileMenu = new JMenu("File");
+        fileMenu.setMnemonic(KeyEvent.VK_F1);
+        menuBar.add(fileMenu);
+
+        // About menu
+        helpMenu = new JMenu("Help");
+        helpMenu.setMnemonic(KeyEvent.VK_F2);
+        menuBar.add(helpMenu);
+
+        // File menu items
+        exitMenuItem = new JMenuItem("Exit");
+        exitMenuItem.setAccelerator(KeyStroke.getKeyStroke(
+                KeyEvent.VK_F, KeyEvent.CTRL_DOWN_MASK
+        ));
+        exitMenuItem.setActionCommand(exitCommand);
+        fileMenu.add(exitMenuItem);
+
+        // About menu items
+        aboutMenuItem = new JMenuItem("About");
+        aboutMenuItem.setActionCommand(aboutCommand);
+        helpMenu.add(aboutMenuItem);
 
         // Layout
         GridBagConstraints constraints = new GridBagConstraints();
@@ -136,7 +167,10 @@ public class MainView implements Runnable, ActionListener {
         editItemButton.addActionListener(this);
         deleteItemButton.addActionListener(this);
         calculateButton.addActionListener(this);
+        exitMenuItem.addActionListener(this);
+        aboutMenuItem.addActionListener(this);
 
+        frame.setJMenuBar(menuBar);
         frame.pack();
         frame.setVisible(true);
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -202,6 +236,18 @@ public class MainView implements Runnable, ActionListener {
         // CALCULATE button
         if (e.getActionCommand().equals(calculateCommand)) {
             totalPriceLabel.setText("Total  Rp" + InventoryController.getTotalPrice());
+        }
+
+        if (e.getActionCommand().equals(exitCommand)) {
+            frame.dispose();
+        }
+
+        if (e.getActionCommand().equals(aboutCommand)) {
+            String message = "A simple Cashier Application made by ReynDev";
+            JOptionPane.showMessageDialog(
+                    null, message,
+                    "About CashierApp", JOptionPane.INFORMATION_MESSAGE
+            );
         }
     }
 }

@@ -10,7 +10,7 @@ public class InventoryController {
     public static void add(int id, String name, int quantity, int price) {
         int totalPrice = getPrice(price, quantity);
 
-        // Add data into the table
+        // Insert data into the table
         table.addRow(new Object[] {
                 id,
                 name,
@@ -34,8 +34,10 @@ public class InventoryController {
     }
 
     public static Object[] getDataRow(int row) {
+        // Initialize Object[] to store array of column attribute
         Object[] data = new Object[5];
 
+        // Copy column values into the Object[] array
         for (int i = 0; i < table.getColumnCount(); i++) {
             data[i] = table.getValueAt(row, i);
         }
