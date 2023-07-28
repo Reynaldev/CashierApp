@@ -8,23 +8,21 @@ import javax.swing.table.DefaultTableModel;
 public class InventoryController {
     static InventoryTableModel tableModel = new InventoryTableModel();
 
-    static int id =  1;
-
-    public static void add(String name, int quantity, int price) {
-        // Initialize data
-        Inventory inventory = new Inventory(id, name, quantity, price);
+    public static void add(int id, String name, int quantity, int price) {
+        int totalPrice = price * quantity;
 
         // Add data into the table
         tableModel.getTableModel().addRow(new Object[] {
-                inventory.getId(),
-                inventory.getName(),
-                inventory.getQuantity(),
-                inventory.getPrice(),
-                inventory.getPriceTotal()
+                id,
+                name,
+                quantity,
+                price,
+                totalPrice
         });
+    }
 
-        // Item ID
-        id++;
+    public static void update(int id, String name, int quantity, int price, int totalPrice) {
+
     }
 
     public static Object[] getDataRow(int row) {

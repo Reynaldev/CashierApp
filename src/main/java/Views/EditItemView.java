@@ -19,23 +19,16 @@ public class EditItemView implements Runnable, ActionListener {
     private JLabel itemNameLabel;
     private JLabel itemQuantityLabel;
     private JLabel itemPriceLabel;
-    private JLabel itemPriceTotalLabel;
     private JTextField itemIDField;
     private JTextField itemNameField;
     private JTextField itemQuantityField;
     private JTextField itemPriceField;
-    private JTextField itemPriceTotalField;
 
     // Commands
-    private String editCommand = "EditCommand";
+    private final String editCommand = "EditCommand";
 
     // Vars
     private Object[] data;
-    private String name;
-    private int id;
-    private int quantity;
-    private int price;
-    private int priceTotal;
 
     public EditItemView(int row) {
         this.data = InventoryController.getDataRow(row);
@@ -103,16 +96,6 @@ public class EditItemView implements Runnable, ActionListener {
         constraints.gridy = 3;
         panel.add(itemPriceLabel, constraints);
 
-        // Price Total label
-        itemPriceTotalLabel = new JLabel("Price Total", SwingConstants.LEFT);
-
-        constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(12, 12, 12, 12);
-        constraints.gridx = 0;
-        constraints.gridy = 4;
-        panel.add(itemPriceTotalLabel, constraints);
-
         // ID field
         itemIDField = new JTextField(data[0].toString());
 
@@ -120,7 +103,6 @@ public class EditItemView implements Runnable, ActionListener {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 1;
-        constraints.gridwidth = 2;
         constraints.gridx = 1;
         constraints.gridy = 0;
         panel.add(itemIDField, constraints);
@@ -132,7 +114,6 @@ public class EditItemView implements Runnable, ActionListener {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 1;
-        constraints.gridwidth = 2;
         constraints.gridx = 1;
         constraints.gridy = 1;
         panel.add(itemNameField, constraints);
@@ -144,7 +125,6 @@ public class EditItemView implements Runnable, ActionListener {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 1;
-        constraints.gridwidth = 2;
         constraints.gridx = 1;
         constraints.gridy = 2;
         panel.add(itemQuantityField, constraints);
@@ -156,22 +136,9 @@ public class EditItemView implements Runnable, ActionListener {
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 1;
-        constraints.gridwidth = 2;
         constraints.gridx = 1;
         constraints.gridy = 3;
         panel.add(itemPriceField, constraints);
-
-        // Price Total field
-        itemPriceTotalField = new JTextField(data[4].toString());
-
-        constraints = new GridBagConstraints();
-        constraints.fill = GridBagConstraints.HORIZONTAL;
-        constraints.insets = new Insets(12, 12, 12, 12);
-        constraints.weightx = 1;
-        constraints.gridwidth = 2;
-        constraints.gridx = 1;
-        constraints.gridy = 4;
-        panel.add(itemPriceTotalField, constraints);
 
         // Edit button
         editButton = new JButton("Edit");
@@ -180,8 +147,9 @@ public class EditItemView implements Runnable, ActionListener {
         constraints = new GridBagConstraints();
         constraints.fill = GridBagConstraints.NONE;
         constraints.insets = new Insets(12, 12, 12, 12);
-        constraints.gridx = 1;
-        constraints.gridy = 5;
+        constraints.gridwidth = 2;
+        constraints.gridx = 0;
+        constraints.gridy = 4;
         panel.add(editButton, constraints);
 
         // Action listener
@@ -231,10 +199,17 @@ public class EditItemView implements Runnable, ActionListener {
                 return;
             }
 
-            if (itemPriceTotalField.getText().isEmpty()) {
+            // Initialize
+            String name = itemNameField.getText();
+            int id = Integer.parseInt(itemIDField.getText());
+            int quantity = Integer.parseInt(itemQuantityField.getText());
+            int price = Integer.parseInt(itemPriceField.getText());
+
+            // Throw message if ID is less than 1
+            if (id < 1) {
                 JOptionPane.showMessageDialog(
                         null,
-                        "Price Total field cannot be empty!",
+                        "ID should be more than 1!",
                         "Warning",
                         JOptionPane.ERROR_MESSAGE
                 );

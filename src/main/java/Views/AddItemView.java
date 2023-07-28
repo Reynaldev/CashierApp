@@ -16,15 +16,17 @@ public class AddItemView implements Runnable, ActionListener {
     private JFrame frame;
     private JPanel panel;
     private JButton addButton;
+    private JLabel itemIDLabel;
     private JLabel itemNameLabel;
     private JLabel itemQuantityLabel;
     private JLabel itemPriceLabel;
+    private JTextField itemIDField;
     private JTextField itemNameField;
     private JTextField itemQuantityField;
     private JTextField itemPriceField;
 
     // Commands
-    private String addCommand = "Add";
+    private final String addCommand = "AddCommand";
 
     @Override
     public void run() {
@@ -42,69 +44,92 @@ public class AddItemView implements Runnable, ActionListener {
         panel = new JPanel(new GridBagLayout());
         frame.add(panel);
 
-        // Item label
-        itemNameLabel = new JLabel("Name", SwingConstants.LEFT);
+        // ID label
+        itemIDLabel = new JLabel("ID", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.gridx = 0;
         constraints.gridy = 0;
-        panel.add(itemNameLabel, constraints);
+        panel.add(itemIDLabel, constraints);
 
-        itemQuantityLabel = new JLabel("Quantity", SwingConstants.LEFT);
+        // Name label
+        itemNameLabel = new JLabel("Name", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.gridx = 0;
         constraints.gridy = 1;
-        panel.add(itemQuantityLabel, constraints);
+        panel.add(itemNameLabel, constraints);
 
-        itemPriceLabel = new JLabel("Price", SwingConstants.LEFT);
+        // Quantity label
+        itemQuantityLabel = new JLabel("Quantity", SwingConstants.LEFT);
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.gridx = 0;
         constraints.gridy = 2;
+        panel.add(itemQuantityLabel, constraints);
+
+        // Price label
+        itemPriceLabel = new JLabel("Price", SwingConstants.LEFT);
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.gridx = 0;
+        constraints.gridy = 3;
         panel.add(itemPriceLabel, constraints);
 
-        // Item field
+        // ID field
+        itemIDField = new JTextField();
+
+        constraints.fill = GridBagConstraints.HORIZONTAL;
+        constraints.insets = new Insets(12, 12, 12, 12);
+        constraints.weightx = 0.9;
+        constraints.gridx = 1;
+        constraints.gridy = 0;
+        panel.add(itemIDField, constraints);
+
+        // Name field
         itemNameField = new JTextField();
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 0.9;
         constraints.gridx = 1;
-        constraints.gridy = 0;
+        constraints.gridy = 1;
         panel.add(itemNameField, constraints);
 
+        // Quantity field
         itemQuantityField = new JTextField();
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 0.9;
         constraints.gridx = 1;
-        constraints.gridy = 1;
+        constraints.gridy = 2;
         panel.add(itemQuantityField, constraints);
 
+        // Price field
         itemPriceField = new JTextField();
 
         constraints.fill = GridBagConstraints.HORIZONTAL;
         constraints.insets = new Insets(12, 12, 12, 12);
         constraints.weightx = 0.9;
         constraints.gridx = 1;
-        constraints.gridy = 2;
+        constraints.gridy = 3;
         panel.add(itemPriceField, constraints);
 
         // Button
         addButton = new JButton("Add");
-        addButton.setActionCommand(addCommand);
         addButton.setMnemonic(KeyEvent.VK_ENTER);
+        addButton.setActionCommand(addCommand);
 
         constraints.fill = GridBagConstraints.NONE;
         constraints.insets = new Insets(12, 12, 12, 12);
-        constraints.weightx = 0;
-        constraints.gridx = 1;
-        constraints.gridy = 3;
+        constraints.gridwidth = 2;
+        constraints.gridx = 0;
+        constraints.gridy = 4;
         panel.add(addButton, constraints);
 
         // Action listener
@@ -118,6 +143,18 @@ public class AddItemView implements Runnable, ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (addCommand.equals(e.getActionCommand())) {
+            // Throw message if ID field is empty
+            if (itemIDField.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "ID field cannot be empty!",
+                        "Warning",
+                        JOptionPane.ERROR_MESSAGE
+                );
+
+                return;
+            }
+
             // Throw message if name field is empty
             if (itemNameField.getText().isEmpty()) {
                 JOptionPane.showMessageDialog(
@@ -156,8 +193,21 @@ public class AddItemView implements Runnable, ActionListener {
 
             // Initialize
             String name = itemNameField.getText();
+            int id = Integer.parseInt(itemIDField.getText());
             int quantity = Integer.parseInt(itemQuantityField.getText());
             int price = Integer.parseInt(itemPriceField.getText());
+
+            // Throw message if quantity is less than 1
+            if (id < 1) {
+                JOptionPane.showMessageDialog(
+                        null,
+                        "ID should be more than 1!",
+                        "Warning",
+                        JOptionPane.ERROR_MESSAGE
+                );
+
+                return;
+            }
 
             // Throw message if quantity is less than 1
             if (quantity < 1) {
@@ -184,7 +234,7 @@ public class AddItemView implements Runnable, ActionListener {
             }
 
             // Call InventoryController function
-            InventoryController.add(name, quantity, price);
+            InventoryController.add(id, name, quantity, price);
 
             // Close window
             frame.dispose();
